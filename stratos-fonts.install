@@ -1,0 +1,6 @@
+post_install() {
+  echo "==> Fonts have been installed to /usr/share/fonts/"
+  echo "==> Rebuilding font cache..."
+  sudo fc-cache -f
+  fc-cache -f
+}
