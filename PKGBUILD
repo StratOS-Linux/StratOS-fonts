@@ -1,7 +1,7 @@
 # Maintainer: ZeStig <zestig@duck.com>
 pkgname=stratos-fonts
 pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of free and nonfree fonts for StratOS"
 arch=('any')
 license=('GPL3')
