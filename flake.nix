@@ -8,7 +8,11 @@
   outputs = { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      # import nixpkgs with unfree allowed *inside this flake only*
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in {
       packages.${system}.default = pkgs.stdenv.mkDerivation {
         pname = "stratos-fonts";
@@ -23,7 +27,8 @@
 
         meta = with pkgs.lib; {
           description = "StratOS custom fonts";
-          license = licenses.unfree;
+          license = licenses.unfree; # stays marked unfree
+          free = false;              # marks it as non-free explicitly
           maintainers = [ "zstg" ];
           platforms = platforms.all;
         };
