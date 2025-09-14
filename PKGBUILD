@@ -1,13 +1,13 @@
 # Maintainer: ZeStig <zestig@duck.com>
 pkgname=stratos-fonts
 pkgver=1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Collection of free and nonfree fonts for StratOS"
 arch=('any')
 license=('GPL3')
 source=()
 noextract=()
-depends=('fontconfig')
+depends=('fontconfig' 'ttf-jetbrains-mono' 'ttf-jetbrains-mono-nerd')
 provides=('fonts' 'stratos-fonts')
 conflicts=()
 install=stratos-fonts.install
