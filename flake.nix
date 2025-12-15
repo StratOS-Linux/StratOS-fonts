@@ -13,33 +13,35 @@
         config.allowUnfree = true;
       };
     in {
-      packages.${system}.default = pkgs.stdenv.mkDerivation {
-        pname = "stratos-fonts";
-        version = "unstable";
+      packages.${system} = {
+        default = pkgs.stdenv.mkDerivation {
+          pname = "stratos-fonts";
+          version = "unstable";
 
-        src = ./.;
+          src = ./.;
 
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out/share/fonts/truetype
-          cp -r usr/share/fonts/* $out/share/fonts/
-          cp -r usr/share/fonts/* $out/share/fonts/truetype/
-          runHook postInstall
-        '';
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out/share/fonts/truetype
+            cp -r usr/share/fonts/* $out/share/fonts/
+            cp -r usr/share/fonts/* $out/share/fonts/truetype/
+            runHook postInstall
+          '';
 
-        postFixup = ''
-          fc-cache -fv $out/share/fonts
-        '';
+          postFixup = ''
+            fc-cache -fv $out/share/fonts
+          '';
 
-        meta = with pkgs.lib; {
-          description = "StratOS custom fonts";
-          license = licenses.unfree;
-          maintainers = [ "zstg" ];
-          platforms = platforms.all;
+          meta = with pkgs.lib; {
+            description = "StratOS custom fonts";
+            license = licenses.unfree;
+            maintainers = [ "zstg" ];
+            platforms = platforms.all;
+          };
         };
-      };
 
-      # Font package for NixOS/Home-Manager
-      packages.${system}.font = self.packages.${system}.default;
+        # alias
+        font = self.packages.${system}.default;
+      };
     };
 }
