@@ -24,12 +24,8 @@
             runHook preInstall
             mkdir -p $out/share/fonts/truetype
             cp -r usr/share/fonts/* $out/share/fonts/
-            cp -r usr/share/fonts/* $out/share/fonts/truetype/
+            cp -r usr/share/fonts/* $out/share/fonts/truetype/ # not necessary
             runHook postInstall
-          '';
-
-          postFixup = ''
-            fc-cache -fv $out/share/fonts
           '';
 
           meta = with pkgs.lib; {
