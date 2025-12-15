@@ -12,32 +12,33 @@
         inherit system;
         config.allowUnfree = true;
       };
-    in {
-      packages.${system} = {
-        default = pkgs.stdenv.mkDerivation {
-          pname = "stratos-fonts";
-          version = "1.0.4";
 
-          src = ./.;
-          nativeBuildInputs = [ pkgs.fontconfig ];
-          installPhase = ''
-            runHook preInstall
-            mkdir -p $out/share/fonts/truetype
-            cp -r usr/share/fonts/* $out/share/fonts/
-            cp -r usr/share/fonts/* $out/share/fonts/truetype/ # not necessary
-            runHook postInstall
-          '';
+      stratos-fonts = pkgs.stdenv.mkDerivation {
+        pname = "stratos-fonts";
+        version = "unstable";
 
-          meta = with pkgs.lib; {
-            description = "StratOS custom fonts";
-            license = licenses.unfree;
-            maintainers = [ "zstg" ];
-            platforms = platforms.all;
-          };
+        src = ./.;
+
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/share/fonts
+          cp -r usr/share/fonts/* $out/share/fonts/
+          runHook postInstall
+        '';
+
+        meta = with pkgs.lib; {
+          description = "StratOS custom fonts";
+          license = licenses.unfree;
+          platforms = platforms.all;
         };
+      };
+    in {
+      # Package output
+      packages.${system}.default = stratos-fonts;
 
-        # alias
-        font = self.packages.${system}.default;
+      # NixOS module output
+      nixosModules.default = { config, lib, pkgs, ... }: {
+        fonts.packages = [ stratos-fonts ];
       };
     };
 }
