@@ -8,7 +8,6 @@
   outputs = { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      # import nixpkgs with unfree allowed *inside this flake only*
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
@@ -21,17 +20,26 @@
         src = ./.;
 
         installPhase = ''
-          mkdir -p $out/share/fonts
+          runHook preInstall
+          mkdir -p $out/share/fonts/truetype
           cp -r usr/share/fonts/* $out/share/fonts/
+          cp -r usr/share/fonts/* $out/share/fonts/truetype/
+          runHook postInstall
+        '';
+
+        postFixup = ''
+          fc-cache -fv $out/share/fonts
         '';
 
         meta = with pkgs.lib; {
           description = "StratOS custom fonts";
-          license = licenses.unfree; # stays marked unfree
-          free = false;              # marks it as non-free explicitly
+          license = licenses.unfree;
           maintainers = [ "zstg" ];
           platforms = platforms.all;
         };
       };
+
+      # Font package for NixOS/Home-Manager
+      packages.${system}.font = self.packages.${system}.default;
     };
 }
