@@ -16,10 +16,10 @@
       packages.${system} = {
         default = pkgs.stdenv.mkDerivation {
           pname = "stratos-fonts";
-          version = "unstable";
+          version = "1.0.4";
 
           src = ./.;
-
+          nativeBuildInputs = [ pkgs.fontconfig ];
           installPhase = ''
             runHook preInstall
             mkdir -p $out/share/fonts/truetype
